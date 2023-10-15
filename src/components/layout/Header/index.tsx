@@ -1,20 +1,14 @@
 import Image from "next/image";
-import { useAccount, useConnect } from "wagmi";
-import { disconnect } from '@wagmi/core'
-
+import { ConnectWallet } from "@/components/ConnectButton";
 
 export const Header = () => {
-  const { connectors, isLoading, connect, error, pendingConnector } =
-    useConnect();
-  const { connector: activeConnector, isConnected, address } = useAccount();
-
   return (
     <header className="w-full text-white-700 body-font">
-      <div className="container flex flex-col items-center justify-between p-6 mx-auto md:flex-row">
+      <div className="container flex flex-row items-center justify-between p-6 mx-auto md:flex-row">
         <a className="flex items-center mb-4 font-medium text-white-900 title-font md:mb-0">
           <Image
             src={
-              "https://www.onlygfx.com/wp-content/uploads/2017/12/fake-stamp-3.png"
+              "/logo.png"
             }
             alt="fake buster logo"
             width={100}
@@ -26,21 +20,14 @@ export const Header = () => {
             Home
           </a>
           <a href="#_" className="mr-5 font-medium hover:text-white-900">
-            About
+            Trending News
           </a>
           <a href="#_" className="font-medium hover:text-white-900">
-            Contact
+            FAQ
           </a>
         </nav>
         <div className="items-center h-full">
-          <button
-            onClick={() => {
-              if (!isConnected) connect({ connector: connectors[0] });
-              else disconnect()
-            }}
-          >
-            {isConnected ? address : "Login"}
-          </button>
+          <ConnectWallet />
         </div>
       </div>
     </header>
