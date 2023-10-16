@@ -3,9 +3,10 @@ import Image from "next/image";
 export const Hero = () => {
   return (
     <div
-      className="flex flex-row p-20 justify-between"
+      className="flex flex-row items-center justify-between px-4 pb-28"
       style={{
         minHeight: "100dvh",
+        width: "100%",
       }}
     >
       <div className="flex flex-col gap-3">
