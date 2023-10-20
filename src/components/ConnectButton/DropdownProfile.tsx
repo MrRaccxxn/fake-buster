@@ -23,7 +23,7 @@ export const DropdownProfile = () => {
           <div className="avatar">
             <div className="w-10 rounded-full">
               <Image
-                src="/user-profile-default.jpg"
+                src="/user-profile-default.png"
                 alt="avatar"
                 width={40}
                 height={40}
@@ -36,9 +36,12 @@ export const DropdownProfile = () => {
                 "..." +
                 address?.slice(address.length - 5, address.length)}
             </div>
-            <div className="text text-gray-500 dark:text-gray-400" style={{
+            <div
+              className="text text-gray-500 dark:text-gray-400"
+              style={{
                 fontSize: "10px",
-            }}>
+              }}
+            >
               Anonymous Raccoon
             </div>
           </div>
@@ -48,6 +51,9 @@ export const DropdownProfile = () => {
         tabIndex={0}
         className="dropdown-content menu p-2 shadow rounded-box w-52 bg-white"
       >
+        <li>
+          <Link href="/profile">Profile</Link>
+        </li>
         <li>
           <div onClick={handleDisconnect}>Disconnect</div>
         </li>

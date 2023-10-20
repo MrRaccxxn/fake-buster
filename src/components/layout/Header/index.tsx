@@ -5,7 +5,7 @@ export const Header = () => {
   return (
     <header className="w-full text-white-700 body-font">
       <div className="container flex flex-row items-center justify-between p-6 mx-auto md:flex-row">
-        <a className="flex items-center mb-4 font-medium text-white-900 title-font md:mb-0">
+        <a href="/" className="flex items-center mb-4 font-medium text-white-900 title-font md:mb-0 cursor-pointer">
           <Image
             src={
               "/logo.png"

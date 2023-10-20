@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 
 export const Hero = () => {
   return (
@@ -13,7 +14,7 @@ export const Hero = () => {
         <h1>
           <span className="font-bold text-8xl">NO MORE </span>
           <br />
-          <span className="font-bold text-8xl text-primaryTextColor">
+          <span className="font-bold text-8xl text-primaryTextColor cursor-pointer">
             {" "}
             FAKE NEWS
           </span>
@@ -22,9 +23,11 @@ export const Hero = () => {
           Fact-check your news with us and get reward for verifying the truth.
         </p>
         <div className="flex flex-row gap-4 pt-6">
-          <div className="btn bg-white text-black hover:bg-slate-300">
+         <Link href={'/'}>
+         <div className="btn bg-white text-black hover:bg-slate-300">
             PUBLISH NEWS
           </div>
+         </Link>
           <div className="btn btn-outline">VERIFY NEWS</div>
         </div>
       </div>
