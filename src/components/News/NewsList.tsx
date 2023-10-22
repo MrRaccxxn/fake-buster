@@ -51,12 +51,8 @@ export const NewsList = () => {
         <div className="grid gap-12 grid-cols-2">
           {news?.map((item: INews) => {
             return (
-              <Link href={`/news/${item?.customId}`}>
-                <NewsCard
-                  title={item?.title}
-                  imageSrc={item?.image}
-                  key={item?.customId}
-                />
+              <Link key={item?.customId} href={`/news/${item?.customId}`}>
+                <NewsCard title={item?.title} imageSrc={item?.image} />
               </Link>
             );
           })}
