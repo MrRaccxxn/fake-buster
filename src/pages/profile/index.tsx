@@ -16,8 +16,6 @@ const UserDetailPage: NextPage = () => {
     if (data) setQrCodeData(JSON.parse(data));
   };
 
-  console.log(qrCodeData)
-
   return (
     <>
       <main className="profile-page">
