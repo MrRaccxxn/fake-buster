@@ -51,7 +51,7 @@ export const Input: React.FC<InputProps> = forwardRef<
         placeholder={placeholder}
         autoComplete="off"
         className={classNames([
-          "relative inline-flex w-full rounded leading-none transition-colors ease-in-out placeholder-gray-500 text-gray-700 bg-gray-50 border border-gray-300 hover:border-blue-400 focus:outline-none focus:border-blue-400 focus:ring-paragraph focus:ring-2 focus:ring-opacity-30",
+          "relative inline-flex w-full rounded leading-none transition-colors ease-in-out placeholder-gray-500 text-gray-700 bg-gray-50 border-b-2 border-b-gray-300 hover:border-b-blue-400 focus:outline-none focus:border-b-blue-400",
           sizeMap[size],
           className,
         ])}

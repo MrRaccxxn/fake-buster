@@ -23,7 +23,7 @@ export const Hero = () => {
           Fact-check your news with us and get reward for verifying the truth.
         </p>
         <div className="flex flex-row gap-4 pt-6">
-         <Link href={'/'}>
+         <Link href={'/news/create-news'}>
          <div className="btn bg-white text-black hover:bg-slate-300">
             PUBLISH NEWS
           </div>
