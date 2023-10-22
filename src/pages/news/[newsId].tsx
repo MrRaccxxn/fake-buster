@@ -2,6 +2,8 @@ import _ from "lodash";
 import type { NextPage } from "next";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
+import Image from "next/image";
+import Link from "next/link";
 
 const EventDetailPage: NextPage = () => {
   const router = useRouter();
@@ -13,6 +15,7 @@ const EventDetailPage: NextPage = () => {
     if (!newsId) {
       return;
     }
+
     const fetchNewsById = async () => {
       const response = await fetch(
         `${process.env.HOST_URL ?? ""}/api/news/get`,
@@ -30,14 +33,18 @@ const EventDetailPage: NextPage = () => {
   if (isFetching)
     return <span className="loading loading-spinner loading-lg"></span>;
 
-  console.log("otem deital", itemDetail);
   return (
     <main className="profile-page relative">
       <section className="relative block h-128 md:h-96 sm:h-72">
+        <div className="relative h-8 w-full">
+          <Image src={itemDetail?.image} alt="Banner" fill={true} />
+        </div>
         <div
           className="absolute top-0 w-full h-full bg-cover bg-no-repeat bg-center"
           style={{
-            backgroundImage: "" ? `url("")` : "none",
+            backgroundImage: itemDetail?.image
+              ? `url("${itemDetail?.image}")`
+              : "none",
             filter: " grayscale(100%)",
           }}
         >
@@ -67,10 +74,14 @@ const EventDetailPage: NextPage = () => {
               <p>Publisher Address</p>
             </div>
 
-            <div className="flex flex-row gap-4">
+            <Link
+              href={itemDetail?.relatedUrl}
+              target="_blank"
+              className="flex flex-row gap-4"
+            >
               <div className="scale-150  w-6 text-center">🏷️</div>
               <p>Related URL</p>
-            </div>
+            </Link>
           </div>
         </div>
       </section>

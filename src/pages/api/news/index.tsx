@@ -9,14 +9,7 @@ export default async function handler(
   try {
     const db = await connectToDataBase();
 
-    const news = await News.create({
-      title: "title",
-      relatedUrl: "relatedUrl",
-      date: "12-12-2008",
-      description: "description",
-      publisherAddress: "0x"
-    });
-    console.log("CREATED NEWS");
+    const news = await News.find({});
 
     res.json({ news });
   } catch (error) {

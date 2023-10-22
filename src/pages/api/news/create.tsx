@@ -7,9 +7,12 @@ export default async function handler(
   res: NextApiResponse
 ) {
   try {
+    console.log("l;legando", req.body);
     await connectToDataBase();
 
     const news = await News.create(req.body);
+
+    console.log("newwws", news);
     res.json({ news });
   } catch (error) {
     console.error(error);
