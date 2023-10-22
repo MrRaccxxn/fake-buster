@@ -1,25 +1,21 @@
 import { NextPage } from "next";
+import Link from "next/link";
 import { useEffect, useState } from "react";
 import QRCode from "react-qr-code";
 
 const UserDetailPage: NextPage = () => {
   const [qrCodeData, setQrCodeData] = useState();
-  const [rawData, setRawData] = useState();
+  const [isLoadingQr, setIsLoadingQr] = useState(false);
 
-  const getQrCodeApi = `https://9ab5-181-188-137-157.ngrok-free.app/api/auth-qr`;
+  const host = process.env.NEXT_PUBLIC_HOST_URL;
+  const startVerification = async () => {
+    setIsLoadingQr(true);
+    const response = await fetch(`${host}/api/auth-qr`);
+    const data = await response.text();
+    setIsLoadingQr(false);
+    if (data) setQrCodeData(JSON.parse(data));
+  };
 
-  useEffect(() => {
-    const fetchQrCode = async () => {
-      const response = await fetch(getQrCodeApi);
-      const data = await response.text();
-      setRawData(JSON.parse(data))
-      return JSON.parse(data);
-    };
-
-    fetchQrCode().then(setQrCodeData).catch(console.error);
-  }, []);
-
-  console.log(rawData)
   return (
     <>
       <main className="profile-page">
@@ -35,14 +31,30 @@ const UserDetailPage: NextPage = () => {
         </section>
         <section className="mx-auto mb-16">
           <div className=" flex flex-col min-w-0 w-full rounded-lg">
-            <p>VERIFY YOUR IDENTITY</p>
-
-            {qrCodeData && <QRCode value={JSON.stringify(qrCodeData)} />}
-          
-            <p>raw data</p>
-            {
-
-            }
+            {!qrCodeData ? (
+              <button className="btn btn-secondary" onClick={startVerification}>
+                {!isLoadingQr ? (
+                  <span>VERIFY YOUR IDENTITY</span>
+                ) : (
+                  <span className="loading loading-dots loading-xs"></span>
+                )}
+              </button>
+            ) : (
+              <div className="flex flex-col justify-center items-center p-8 gap-4">
+                <p className="text-xl text-gray-300">
+                  Scan this code from the{" "}
+                  <Link
+                    className="text text-violet-300 font-bold"
+                    href={
+                      "https://apps.apple.com/us/app/polygon-id/id1629870183"
+                    }
+                  >
+                    Polygon ID Wallet
+                  </Link>
+                </p>
+                {qrCodeData && <QRCode value={JSON.stringify(qrCodeData)} />}
+              </div>
+            )}
           </div>
         </section>
       </main>
