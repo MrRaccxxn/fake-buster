@@ -20,7 +20,7 @@ export const NewsForm = () => {
       (process.env.NEXT_PUBLIC_NEWS_PUBLISHER_ADDRESS as `0x${string}`) ?? "",
     abi: PublisherAbi,
     functionName: "publishNews",
-    args: [10],
+    args: [10000],
     onError(error) {
       console.error(error)
       toast.error(`Something went wrong connecting to the Smart Contract`);
