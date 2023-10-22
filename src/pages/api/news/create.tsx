@@ -10,6 +10,7 @@ export default async function handler(
     const db = await connectToDataBase();
 
     const news = await News.create(req.body);
+    console.log(news)
     res.json({ news });
   } catch (error) {
     console.error(error);
