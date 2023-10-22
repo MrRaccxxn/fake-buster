@@ -1,17 +1,57 @@
 import { DragAndDrop } from "@/components/form/DragNDrop";
 import { FormInput } from "@/components/form/FormInput";
+import { PublisherAbi } from "@/contractsAbi/Publisher";
 import { INewsForm } from "@/types/INews";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
+import toast from "react-hot-toast";
+import { useAccount, useContractWrite } from "wagmi";
 
 export const NewsForm = () => {
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<INewsForm>();
+  } = useForm<INewsForm>(); 
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const onSubmit = handleSubmit((data: any) => {
+  const { data, isLoading, isSuccess, write } = useContractWrite({
+    address:
+      (process.env.NEXT_PUBLIC_NEWS_PUBLISHER_ADDRESS as `0x${string}`) ?? "",
+    abi: PublisherAbi,
+    functionName: "publishNews",
+    args: [10],
+    onError(error) {
+      console.error(error)
+      toast.error(`Something went wrong connecting to the Smart Contract`);
+    },
+  });
+
+  const onSubmit = handleSubmit(async (data: INewsForm) => {
+    setIsSubmitting(true);
+    write();
     console.log(data);
+
+    if (isSuccess) {
+      const response = await fetch(
+        `${process.env.HOST_URL ?? ""}/api/news/create`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(data),
+        }
+      );
+
+      if (response.ok) {
+        toast.success(`${data.title} has been created!`);
+      } else {
+        toast.error(`Something went wrong creating ${data.title}!`);
+      }
+    }
+
+    setIsSubmitting(false);
   });
 
   return (
@@ -77,7 +117,11 @@ export const NewsForm = () => {
       </div>
 
       <button className="btn btn-secondary my-2 w-full" onClick={onSubmit}>
-        Continue
+        {!isSubmitting ?? isLoading ? (
+          <span>Continue</span>
+        ) : (
+          <span className="loading loading-dots loading-sm"></span>
+        )}
       </button>
     </div>
   );

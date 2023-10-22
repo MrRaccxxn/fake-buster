@@ -14,7 +14,7 @@ export default async function handler(
     throw new Error("sessionId is required");
 
   const raw = await getRawBody(req);
-
+  const tokenStr = raw.toString().trim();
 
   const authRequest = JSON.parse(
     (await redis.hget("request", sessionId ?? "")) ?? ""
