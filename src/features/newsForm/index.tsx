@@ -2,53 +2,63 @@ import { DragAndDrop } from "@/components/form/DragNDrop";
 import { FormInput } from "@/components/form/FormInput";
 import { PublisherAbi } from "@/contractsAbi/Publisher";
 import { INewsForm } from "@/types/INews";
+import { getBase64 } from "@/utils/getBase64";
+import { useRouter } from "next/router";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
-import { useAccount, useContractWrite } from "wagmi";
+import { v4 as uuidv4 } from "uuid";
+import { useContractWrite } from "wagmi";
 
 export const NewsForm = () => {
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<INewsForm>(); 
+  } = useForm<INewsForm>();
   const [isSubmitting, setIsSubmitting] = useState(false);
-
-  const { data, isLoading, isSuccess, write } = useContractWrite({
+  const randomId = uuidv4();
+  const router = useRouter();
+  const {
+    data: writeResultData,
+    isLoading,
+    isSuccess,
+    writeAsync,
+  } = useContractWrite({
     address:
       (process.env.NEXT_PUBLIC_NEWS_PUBLISHER_ADDRESS as `0x${string}`) ?? "",
     abi: PublisherAbi,
     functionName: "publishNews",
-    args: [10000],
+    args: [10],
     onError(error) {
-      console.error(error)
+      console.error(error);
       toast.error(`Something went wrong connecting to the Smart Contract`);
     },
   });
 
   const onSubmit = handleSubmit(async (data: INewsForm) => {
     setIsSubmitting(true);
-    write();
-    console.log(data);
+    await writeAsync();
 
-    if (isSuccess) {
-      const response = await fetch(
-        `${process.env.HOST_URL ?? ""}/api/news/create`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(data),
-        }
-      );
-
-      if (response.ok) {
-        toast.success(`${data.title} has been created!`);
-      } else {
-        toast.error(`Something went wrong creating ${data.title}!`);
+    const response = await fetch(
+      `${process.env.HOST_URL ?? ""}/api/news/create`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          ...data,
+          customId: randomId,
+        } as INewsForm),
       }
+    );
+
+    console.log(response);
+
+    if (response.ok) {
+      toast.success(`${data.title} has been created!`);
+      router.push(`/news/${randomId}`);
     }
 
     setIsSubmitting(false);
@@ -78,7 +88,7 @@ export const NewsForm = () => {
         <DragAndDrop
           memoryImage={""}
           register={register}
-          inputName={"poster"}
+          inputName={"image"}
           className={""}
           label={"poster"}
         />
@@ -117,7 +127,7 @@ export const NewsForm = () => {
       </div>
 
       <button className="btn btn-secondary my-2 w-full" onClick={onSubmit}>
-        {!isSubmitting ?? isLoading ? (
+        {!isSubmitting ?? !isLoading ? (
           <span>Continue</span>
         ) : (
           <span className="loading loading-dots loading-sm"></span>

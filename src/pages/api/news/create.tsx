@@ -7,10 +7,9 @@ export default async function handler(
   res: NextApiResponse
 ) {
   try {
-    const db = await connectToDataBase();
+    await connectToDataBase();
 
     const news = await News.create(req.body);
-    console.log(news)
     res.json({ news });
   } catch (error) {
     console.error(error);

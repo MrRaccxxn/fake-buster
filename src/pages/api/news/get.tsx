@@ -8,9 +8,13 @@ export default async function handler(
 ) {
   try {
     const db = await connectToDataBase();
+    const { customId } = JSON.parse(req.body);
 
-    const news = await News.create(req.body);
-    res.json({ news });
+    const news = await News.findOne({
+      customId: customId as string,
+    });
+
+    res.send({ news });
   } catch (error) {
     console.error(error);
   }
