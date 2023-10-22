@@ -37,8 +37,7 @@ export const NewsForm = () => {
 
   const onSubmit = handleSubmit(async (data: INewsForm) => {
     setIsSubmitting(true);
-    // await writeAsync();
-    console.log(data);
+    await writeAsync();
 
     const response = await fetch(
       `${process.env.HOST_URL ?? ""}/api/news/create`,

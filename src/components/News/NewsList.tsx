@@ -18,7 +18,6 @@ export const NewsList = () => {
       const data = await response.json();
       setNews(data.news);
       setIsFetching(false);
-      console.log(data);
     };
 
     fetchAllNews();
